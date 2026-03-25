@@ -1,0 +1,11 @@
+# Бинарные файлы
+lionheart*
+dist/
+bin/
+
+# Конфиги с приватными данными
+config.json
+
+# Файлы Go
+vendor/
+go.sum
