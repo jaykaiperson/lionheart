@@ -1,4 +1,5 @@
-# lionheart proxy
+# lionheart — прокси, использующий WB Stream (платформа Wildberries) для передачи трафика.
+## По случайному стечению обстоятельств обходит белые списки.
 
 <p align="center">
   <a href="#russian">🇷🇺 Русский</a> • 
