@@ -1,11 +1,11 @@
-# Бинарные файлы
-lionheart*
+# Игнорируем логи и дампы
+sniff_results/
+sniff_turn.js
+
+# Игнорируем бинарники и папки с билдами
 dist/
-bin/
+lionheart-linux-amd64
 
-# Конфиги с приватными данными
+# Игнорируем локальные конфиги с вашим IP и паролем!
 config.json
-
-# Файлы Go
-vendor/
-go.sum
+*.tmp
