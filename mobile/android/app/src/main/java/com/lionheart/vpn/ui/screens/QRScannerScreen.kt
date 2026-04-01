@@ -41,7 +41,9 @@ import java.util.concurrent.Executors
 @Composable
 fun QRScannerScreen(
     vm: VpnViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    /** После успешного добавления ключа: например на главный или назад в настройки */
+    onServerAdded: () -> Unit
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -214,9 +216,11 @@ fun QRScannerScreen(
             },
             confirmButton = {
                 TextButton(onClick = {
-                    vm.setSmartKey(key)
-                    scannedKey = null
-                    onBack()
+                    vm.addServerByKey("", key) {
+                        scannedKey = null
+                        processing = false
+                        onServerAdded()
+                    }
                 }) { Text(stringResource(R.string.qr_install)) }
             },
             dismissButton = {

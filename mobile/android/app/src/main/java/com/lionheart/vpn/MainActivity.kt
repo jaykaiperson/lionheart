@@ -13,9 +13,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.lionheart.vpn.service.LionheartVpnService
 import com.lionheart.vpn.ui.screens.*
 import com.lionheart.vpn.ui.theme.LionheartTheme
@@ -81,15 +83,43 @@ fun LionheartNavigation(vm: VpnViewModel, onRequestVpnPermission: () -> Unit) {
             )
         }
         composable("settings") {
-            SettingsScreen(vm, onBack = { navController.popBackStack() }, onScanQR = { navController.navigate("qr_scanner") })
+            SettingsScreen(vm, onBack = { navController.popBackStack() }, onScanQR = { navController.navigate("qr_scanner?origin=settings") })
         }
         composable("logs") { LogsScreen(vm = vm, onBack = { navController.popBackStack() }) }
         composable("split_tunnel/{serverId}") { entry ->
             val serverId = entry.arguments?.getString("serverId") ?: ""
             SplitTunnelScreen(vm = vm, serverId = serverId, onBack = { navController.popBackStack() })
         }
-        composable("qr_scanner") { QRScannerScreen(vm = vm, onBack = { navController.popBackStack() }) }
-        composable("setup_wizard") { SetupWizardScreen(vm = vm, onBack = { navController.popBackStack() }) }
+        composable(
+            route = "qr_scanner?origin={origin}",
+            arguments = listOf(
+                navArgument("origin") {
+                    type = NavType.StringType
+                    defaultValue = "settings"
+                }
+            )
+        ) { entry ->
+            val origin = entry.arguments?.getString("origin") ?: "settings"
+            QRScannerScreen(
+                vm = vm,
+                onBack = { navController.popBackStack() },
+                onServerAdded = {
+                    if (origin == "setup") {
+                        navController.popBackStack("home", inclusive = false)
+                    } else {
+                        navController.popBackStack()
+                    }
+                }
+            )
+        }
+        composable("setup_wizard") {
+            SetupWizardScreen(
+                vm = vm,
+                onBack = { navController.popBackStack() },
+                onScanQR = { navController.navigate("qr_scanner?origin=setup") },
+                onAddedServerGoHome = { navController.popBackStack("home", inclusive = false) }
+            )
+        }
         composable("server_detail/{serverId}") { entry ->
             val serverId = entry.arguments?.getString("serverId") ?: ""
             ServerDetailScreen(

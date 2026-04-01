@@ -133,13 +133,20 @@ class VpnViewModel(application: Application) : AndroidViewModel(application) {
     fun selectServer(id: String) = viewModelScope.launch {
         try { serverRepo.setActive(id) } catch (_: Exception) {}
     }
-    fun addServerByKey(name: String, key: String) = viewModelScope.launch {
+    fun addServerByKey(name: String, key: String, onSuccess: (() -> Unit)? = null) = viewModelScope.launch {
+        var ok = false
         try {
-            val ip = try { Golib.parseSmartKeyInfo(key) } catch (_: Exception) { "" }
-            val server = ServerProfile(name = name.ifBlank { ip.ifBlank { "Сервер" } }, smartKey = key, serverIP = ip)
-            serverRepo.addServer(server); serverRepo.setActive(server.id)
+            val k = key.trim()
+            val ip = try { Golib.parseSmartKeyInfo(k) } catch (_: Exception) { "" }
+            val server = ServerProfile(name = name.ifBlank { ip.ifBlank { "Сервер" } }, smartKey = k, serverIP = ip)
+            withContext(Dispatchers.IO) {
+                serverRepo.addServer(server)
+                serverRepo.setActive(server.id)
+            }
+            ok = true
         } catch (_: Exception) {}
         _showAddKeyDialog.value = false
+        if (ok) onSuccess?.invoke()
     }
     /** Удаление из списка + сброс активного сервера / prefs (общая логика для «удалить из приложения» и uninstall). */
     private suspend fun performRemoveServer(id: String) {

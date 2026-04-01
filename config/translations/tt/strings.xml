@@ -70,6 +70,9 @@
     <string name="connect_now">Тоташу</string>
     <string name="or_add_existing">яки булган серверны өстәгез</string>
     <string name="enter_smart_key">Смарт-ачкыч кертү</string>
+    <string name="smart_key_field_hint">Смарт-ачкыч (base64)</string>
+    <string name="paste_from_clipboard">Кертү</string>
+    <string name="clipboard_empty">Алмашу буферы буш</string>
     <string name="scan_qr">QR-код сканерлау</string>
     <string name="server_not_found">Бу сервер исемлектә юк инде. Кайту өчен «Кайту» төймәсенә басыгыз.</string>
     <string name="server_section">Сервер</string>

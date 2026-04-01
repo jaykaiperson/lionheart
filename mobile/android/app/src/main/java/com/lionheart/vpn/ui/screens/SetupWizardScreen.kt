@@ -1,4 +1,7 @@
 package com.lionheart.vpn.ui.screens
+import android.content.ClipboardManager
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -17,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -31,9 +35,21 @@ import com.lionheart.vpn.viewmodel.VpnViewModel
 @Composable
 fun SetupWizardScreen(
     vm: VpnViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onScanQR: () -> Unit = {},
+    onAddedServerGoHome: () -> Unit
 ) {
+    val context = LocalContext.current
     val setupState by vm.setupState.collectAsState()
+    val showAddKeyDialog by vm.showAddKeyDialog.collectAsState()
+    var addKeyName by remember { mutableStateOf("") }
+    var addKeyValue by remember { mutableStateOf("") }
+    LaunchedEffect(showAddKeyDialog) {
+        if (showAddKeyDialog) {
+            addKeyName = ""
+            addKeyValue = ""
+        }
+    }
     var host by remember { mutableStateOf("") }
     var port by remember { mutableStateOf("22") }
     var username by remember { mutableStateOf("root") }
@@ -188,9 +204,61 @@ fun SetupWizardScreen(
                 Spacer(Modifier.height(12.dp))
                 OutlinedButton(onClick = { vm.showAddByKey() }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) { Icon(Icons.Filled.Key, null, modifier = Modifier.size(18.dp)); Spacer(Modifier.width(8.dp)); Text(stringResource(R.string.enter_smart_key)) }
                 Spacer(Modifier.height(8.dp))
-                OutlinedButton(onClick = { }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) { Icon(Icons.Filled.QrCodeScanner, null, modifier = Modifier.size(18.dp)); Spacer(Modifier.width(8.dp)); Text(stringResource(R.string.scan_qr)) }
+                OutlinedButton(onClick = onScanQR, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) { Icon(Icons.Filled.QrCodeScanner, null, modifier = Modifier.size(18.dp)); Spacer(Modifier.width(8.dp)); Text(stringResource(R.string.scan_qr)) }
             }
             Spacer(Modifier.height(40.dp))
         }
+    }
+    if (showAddKeyDialog) {
+        AlertDialog(
+            onDismissRequest = { vm.hideAddKeyDialog() },
+            title = { Text(stringResource(R.string.enter_smart_key)) },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = addKeyName,
+                        onValueChange = { addKeyName = it },
+                        label = { Text(stringResource(R.string.server_name)) },
+                        placeholder = { Text(stringResource(R.string.server_name_hint)) },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(14.dp)
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    OutlinedTextField(
+                        value = addKeyValue,
+                        onValueChange = { addKeyValue = it },
+                        label = { Text(stringResource(R.string.smart_key_field_hint)) },
+                        singleLine = false,
+                        minLines = 3,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(14.dp)
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    TextButton(
+                        onClick = {
+                            val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            val clip = cm.primaryClip?.getItemAt(0)?.coerceToText(context)?.toString()?.trim().orEmpty()
+                            if (clip.isEmpty()) {
+                                Toast.makeText(context, context.getString(R.string.clipboard_empty), Toast.LENGTH_SHORT).show()
+                            } else {
+                                addKeyValue = clip
+                            }
+                        }
+                    ) { Text(stringResource(R.string.paste_from_clipboard)) }
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        vm.addServerByKey(addKeyName.trim(), addKeyValue) { onAddedServerGoHome() }
+                    },
+                    enabled = addKeyValue.trim().isNotBlank()
+                ) { Text(stringResource(R.string.add_server)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { vm.hideAddKeyDialog() }) { Text(stringResource(R.string.cancel)) }
+            }
+        )
     }
 }

@@ -120,6 +120,9 @@
     <string name="connect_now">Падключыцца</string>
     <string name="or_add_existing">або дадайце існуючы сервер</string>
     <string name="enter_smart_key">Увесці смарт-ключ</string>
+    <string name="smart_key_field_hint">Смарт-ключ (base64)</string>
+    <string name="paste_from_clipboard">Уставіць</string>
+    <string name="clipboard_empty">Буфер абмену пусты</string>
     <string name="scan_qr">Сканаваць QR-код</string>
 
     <!-- Server detail -->

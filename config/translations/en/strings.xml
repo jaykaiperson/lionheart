@@ -120,6 +120,9 @@
     <string name="connect_now">Connect</string>
     <string name="or_add_existing">or add an existing server</string>
     <string name="enter_smart_key">Enter smart key</string>
+    <string name="smart_key_field_hint">Smart key (base64)</string>
+    <string name="paste_from_clipboard">Paste</string>
+    <string name="clipboard_empty">Clipboard is empty</string>
     <string name="scan_qr">Scan QR code</string>
 
     <!-- Server detail -->
