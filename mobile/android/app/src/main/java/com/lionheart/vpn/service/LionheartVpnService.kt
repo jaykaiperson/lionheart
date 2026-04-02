@@ -76,7 +76,7 @@ class LionheartVpnService : VpnService() {
                 val mtu = profile?.mtu ?: 1500
                 val splitEnabled = profile?.splitEnabled ?: false
                 val splitMode = profile?.splitMode ?: "bypass"
-                val splitApps = profile?.splitApps ?: emptyList()
+                var splitApps = profile?.splitApps ?: emptyList()
                 val ipMode = profile?.ipMode ?: "prefer_v4"
                 val killSwitch = profile?.killSwitch ?: false
                 if (stopping) { cleanup(); return@launch }
@@ -93,11 +93,18 @@ class LionheartVpnService : VpnService() {
                     else -> builder.addRoute("0.0.0.0", 0)
                 }
                 if (!killSwitch) {
-                    try { builder.addDisallowedApplication(packageName) } catch (_: Exception) {}
+                    if(!splitEnabled || splitMode == "bypass") {
+                        try { builder.addDisallowedApplication(packageName) } catch (_: Exception) {}
+                    } else {
+                        try {splitApps = splitApps.filter { it != packageName } } catch(_: Exception) {}
+                    }
+                    Log.d(TAG, "splitEnabled "+splitEnabled);
+                    Log.d(TAG, "splitIsNotEmpty "+splitApps.isNotEmpty());
+                    Log.d(TAG, "splitMode "+splitMode);
                     if (splitEnabled && splitApps.isNotEmpty()) {
                         when (splitMode) {
-                            "bypass" -> splitApps.forEach { try { builder.addDisallowedApplication(it) } catch (_: Exception) {} }
-                            "only" -> splitApps.forEach { try { builder.addAllowedApplication(it) } catch (_: Exception) {} }
+                            "bypass" -> splitApps.forEach { try { builder.addDisallowedApplication(it); Log.d(TAG, "addDisallowed: "+it) } catch (ex: Exception) {Log.e(TAG, "Error adding split: ${ex.message}", ex)} }
+                            "only" -> splitApps.forEach { try { builder.addAllowedApplication(it); Log.d(TAG, "addAllowed: "+it) } catch (ex: Exception) {Log.e(TAG, "Error adding split: ${ex.message}", ex)} }
                         }
                     }
                 }

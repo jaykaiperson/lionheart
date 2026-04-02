@@ -344,11 +344,26 @@ class VpnViewModel(application: Application) : AndroidViewModel(application) {
     fun loadInstalledApps() = viewModelScope.launch(Dispatchers.IO) {
         try {
             val pm = getApplication<Application>().packageManager
-            _installedApps.value = pm.getInstalledApplications(PackageManager.GET_META_DATA)
+            val mainIntent = Intent(Intent.ACTION_MAIN, null).apply {
+                addCategory(Intent.CATEGORY_LAUNCHER)
+            }
+            
+            val resolvedInfoList = pm.queryIntentActivities(mainIntent, 0)
+            val apps = resolvedInfoList.map { resolveInfo ->
+                val appInfo = resolveInfo.activityInfo.applicationInfo
+                AppInfo(
+                    appInfo.packageName,
+                    appInfo.loadLabel(pm).toString(),
+                    (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+                )
+            }
+            
+            _installedApps.value = apps
                 .filter { it.packageName != getApplication<Application>().packageName }
-                .map { AppInfo(it.packageName, it.loadLabel(pm).toString(), (it.flags and ApplicationInfo.FLAG_SYSTEM) != 0) }
                 .sortedWith(compareBy({ it.isSystem }, { it.label.lowercase() }))
-        } catch (_: Exception) {}
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
     fun setSmartKey(key: String) = viewModelScope.launch {
         prefs.setSmartKey(key); try { prefs.setServerIP(Golib.parseSmartKeyInfo(key)) } catch (_: Exception) { prefs.setServerIP("") }
