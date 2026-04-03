@@ -1,0 +1,103 @@
+# ─── Сборочные артефакты ───────────────────────────────────────────────────
+output/
+*.apk
+*.aar
+*.aab
+
+# ─── Go ────────────────────────────────────────────────────────────────────
+# Скомпилированные бинарники
+/cmd/lionheart/lionheart
+/cmd/lionheart/lionheart.exe
+
+# Вендор-зависимости (если не используется go mod vendor)
+vendor/
+
+# Кэш тестов
+*.test
+*.out
+
+# ─── Android / Gradle ──────────────────────────────────────────────────────
+# Скомпилированный код и кэш Gradle
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/app/build/
+mobile/android/app/libs/
+
+# Локальные настройки SDK (у каждого разработчика свой путь)
+mobile/android/local.properties
+
+# Файлы подписи — НИКОГДА не коммитить в публичный репо!
+*.jks
+*.keystore
+*.p12
+
+# Сгенерированный код gomobile
+mobile/android/golib/.gomobile-*
+mobile/android/golib/gomobile-*.go
+mobile/android/golib/seq_*.go
+
+# Кэш идёт в папку core внутри android (копируется при сборке)
+mobile/android/core/
+
+# ─── Конфигурация (секреты) ────────────────────────────────────────────────
+config.json
+*.secret
+.env
+.env.*
+
+# ─── Android NDK (тяжёлый, скачивается отдельно) ──────────────────────────
+android-ndk-*/
+android-ndk-*.zip
+
+# ─── macOS ─────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V8
+.Trashes
+Icon?
+*.swp
+
+# ─── Linux ─────────────────────────────────────────────────────────────────
+*~
+.nfs*
+
+# ─── Windows ───────────────────────────────────────────────────────────────
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ─── IDE и редакторы ───────────────────────────────────────────────────────
+# JetBrains (Android Studio, GoLand, IntelliJ)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Vim / Neovim
+*.swp
+*.swo
+.vim/
+
+# Emacs
+\#*\#
+.#*
+
+# ─── Логи и отладка ────────────────────────────────────────────────────────
+*.log
+crash-*.txt
+logcat-*.txt
+
+# ─── Временные файлы ───────────────────────────────────────────────────────
+tmp/
+temp/
+.tmp/
+*.tmp
+*.bak
+*.orig

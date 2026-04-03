@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="18dp"
+    android:viewportWidth="640"
+    android:viewportHeight="480">
+    <!-- Red top 2/3 -->
+    <path android:fillColor="#CF101A" android:pathData="M0,0h640v320H0z"/>
+    <!-- Green bottom 1/3 -->
+    <path android:fillColor="#007C30" android:pathData="M0,320h640v160H0z"/>
+    <!-- White ornament strip on left -->
+    <path android:fillColor="#FFFFFF" android:pathData="M0,0h80v480H0z"/>
+    <!-- Red ornament pattern (simplified) -->
+    <path android:fillColor="#CF101A" android:pathData="M20,40h40v40H20zM20,120h40v40H20zM20,200h40v40H20zM20,280h40v40H20zM20,360h40v40H20z"/>
+</vector>

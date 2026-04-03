@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lionheart</string>
+
+    <!-- NEW: strings that were hardcoded in Kotlin -->
+    <string name="language_title">Язык</string>
+    <string name="language_subtitle">Выберите язык интерфейса</string>
+    <string name="system_language_settings">Системные настройки языка</string>
+    <string name="graphene_title">Привет, GrapheneOS!</string>
+    <string name="graphene_message">Приложение заметило, что вы используете GrapheneOS. Это круто!\n\nИмейте в виду: по умолчанию при первом подключении VPN система включает Kill Switch (при отключении VPN интернет перестанет работать) и режим Always-On.\n\nЧтобы это изменить, зайдите в:\nНастройки → Сеть → VPN → Lionheart → ⚙️</string>
+    <string name="graphene_ok">Понятно!</string>
+    <string name="server_outdated_title">Сервер устарел</string>
+    <string name="server_outdated_msg">На сервере v%1$s, нужна v%2$s.</string>
+    <string name="update_server">Обновить сервер</string>
+    <string name="updating_server">Обновление сервера…</string>
+    <string name="server_updated">Сервер обновлён!</string>
+    <string name="icon_color">Цвет иконки</string>
+    <string name="icon_color_desc">Выберите цвет. Иконка изменится через несколько секунд.</string>
+    <string name="icon_standard">Стандарт</string>
+    <string name="icon_gold">Золото</string>
+    <string name="icon_red">Красный</string>
+    <string name="icon_blue">Синий</string>
+    <string name="icon_green">Зелёный</string>
+    <string name="icon_white">Белый</string>
+    <string name="hide_app">Спрятать приложение</string>
+    <string name="hide_app_desc">Иконка и название на лаунчере изменятся.</string>
+    <string name="hide_off">Выкл</string>
+    <string name="next">Далее</string>
+    <string name="step_name_title">Как назвать сервер?</string>
+    <string name="step_name_desc">Любое имя для вашего удобства.</string>
+    <string name="step_address_title">Адрес сервера</string>
+    <string name="step_ip_hint">Не знаете IP? Запустите на сервере:</string>
+    <string name="step_ssh_port_hint">В 99%% случаев порт SSH — это 22. Менять не нужно.</string>
+    <string name="step_auth_title">Авторизация</string>
+    <string name="step_auth_hint">Пароль от SSH обычно приходит на email после покупки VPS (от хостинга). Также его можно найти в панели управления сервером.</string>
+    <string name="reassurance_msg">Если на сервере уже установлен Lionheart — скрипт обновит его (при новой версии) или просто добавит, сохранив существующий ключ. VPN на других устройствах продолжит работать.</string>
+    <string name="server_version">Версия сервера</string>
+    <string name="turn_label">TURN</string>
+    <string name="no_ssh_access">У этого сервера нет SSH-доступа.</string>
+    <string name="update_confirm_title">Обновить сервер</string>
+    <string name="update_confirm_msg">Сервер v%1$s → v%2$s</string>
+    <string name="update_confirm_desc">Будет скачана новая версия и перезапущен сервис.</string>
+    <string name="update_btn">Обновить</string>
+    <string name="ssh_port">Порт SSH</string>
+
+    <!-- Status -->
+    <string name="status_connected">Подключено</string>
+    <string name="status_connecting">Подключение…</string>
+    <string name="status_reconnecting">Переподключение…</string>
+    <string name="status_error">Ошибка соединения</string>
+    <string name="status_disconnected">Отключено</string>
+
+    <!-- Home -->
+    <string name="select_server">Выбрать</string>
+    <string name="ping">Пинг</string>
+    <string name="tap_to_ping">Нажмите</string>
+    <string name="ms_suffix">%d мс</string>
+    <string name="add_first_server">Добавьте первый сервер</string>
+    <string name="add_first_server_desc">Установите на VPS или введите ключ</string>
+    <string name="add_server">Добавить сервер</string>
+    <string name="server_label">Сервер</string>
+    <string name="hidden">Скрыт</string>
+    <string name="mode_label">Режим</string>
+    <string name="mode_vpn">VPN</string>
+    <string name="mode_socks5">SOCKS5 прокси</string>
+    <string name="mode_mtproto">MTProto</string>
+    <string name="dns_label">DNS</string>
+    <string name="adguard_no_ads">AdGuard (без рекламы)</string>
+    <string name="mtu_label">MTU</string>
+    <string name="traffic_disguised">Трафик маскируется под видеозвонок</string>
+    <string name="servers">Серверы</string>
+    <string name="total_label">Всего: %s</string>
+
+    <!-- Settings -->
+    <string name="settings">Настройки</string>
+    <string name="back">Назад</string>
+    <string name="automation">Автоматизация</string>
+    <string name="auto_connect">Автоподключение</string>
+    <string name="auto_connect_desc">Подключаться при открытии приложения</string>
+    <string name="boot_connect">Запуск при загрузке</string>
+    <string name="boot_connect_desc">Подключать VPN после перезагрузки устройства</string>
+    <string name="appearance">Оформление</string>
+    <string name="theme">Тема</string>
+    <string name="theme_system">Системная</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="protocol">Протокол</string>
+    <string name="transport">Транспорт</string>
+    <string name="multiplexer">Мультиплексор</string>
+    <string name="encryption">Шифрование</string>
+    <string name="proxy">Прокси</string>
+    <string name="relay">Реле</string>
+    <string name="data">Данные</string>
+    <string name="reset_all">Сбросить все настройки</string>
+    <string name="reset_all_desc">Удалить все серверы и вернуть настройки по умолчанию</string>
+    <string name="about">О приложении</string>
+    <string name="version_format">Версия %s</string>
+    <string name="about_description">VPN-клиент с маскировкой трафика через WebRTC TURN-серверы. Трафик шифруется AES-256 и передаётся по KCP/UDP через TURN-реле, что делает его неотличимым от обычных видеозвонков.</string>
+    <string name="close">Закрыть</string>
+    <string name="reset_all_confirm">Сбросить всё?</string>
+    <string name="reset_all_warning">Все серверы, настройки и логи будут удалены. Это действие необратимо.</string>
+    <string name="reset">Сбросить</string>
+    <string name="cancel">Отмена</string>
+
+    <!-- Setup wizard -->
+    <string name="setup_server">Установка сервера</string>
+    <string name="auto_setup">Автоматическая настройка</string>
+    <string name="auto_setup_desc">Lionheart автоматически установит VPN-сервер на ваш VPS. Вам нужен SSH-доступ (root).</string>
+    <string name="server_name">Имя сервера</string>
+    <string name="server_name_hint">Мой VPS</string>
+    <string name="ip_address">IP-адрес</string>
+    <string name="port">Порт</string>
+    <string name="username">Пользователь</string>
+    <string name="ssh_password">Пароль SSH</string>
+    <string name="show_password">Показать</string>
+    <string name="install">Установить</string>
+    <string name="step_of">Шаг %1$d из %2$d</string>
+    <string name="server_installed">Сервер установлен!</string>
+    <string name="server_installed_desc">VPN-сервер запущен и добавлен в список</string>
+    <string name="connect_now">Подключиться</string>
+    <string name="or_add_existing">или добавьте существующий сервер</string>
+    <string name="enter_smart_key">Ввести смарт-ключ</string>
+    <string name="scan_qr">Сканировать QR-код</string>
+
+    <!-- Server detail -->
+    <string name="server_section">Сервер</string>
+    <string name="name">Имя</string>
+    <string name="country">Страна</string>
+    <string name="show_ip">Показывать IP</string>
+    <string name="show_ip_desc">Отображать IP сервера на главном экране</string>
+    <string name="connection_mode">Режим подключения</string>
+    <string name="mode_vpn_desc">VPN — весь трафик устройства идёт через туннель</string>
+    <string name="mode_socks5_desc">SOCKS5 прокси — локальный прокси на 127.0.0.1:1080, настраивается в каждом приложении отдельно</string>
+    <string name="mode_mtproto_desc">MTProto прокси — для Telegram, локальный прокси</string>
+    <string name="network">Сеть</string>
+    <string name="dns_server">DNS-сервер</string>
+    <string name="adguard_block_ads">AdGuard (блокировка рекламы)</string>
+    <string name="ip_protocol">IP-протокол</string>
+    <string name="prefer_ipv4">Предпочитать IPv4</string>
+    <string name="prefer_ipv4_default">Предпочитать IPv4 (по умолчанию)</string>
+    <string name="only_ipv4">Только IPv4</string>
+    <string name="prefer_ipv6">Предпочитать IPv6</string>
+    <string name="prefer_ipv6_desc">Предпочитать IPv6 — может лучше обходить блокировки, т.к. IPv6-фильтрация менее распространена</string>
+    <string name="only_ipv6">Только IPv6</string>
+    <string name="only_ipv6_desc">Только IPv6 — не работает в сетях без IPv6</string>
+    <string name="security">Безопасность</string>
+    <string name="ad_block">Блокировка рекламы</string>
+    <string name="ad_block_desc">AdGuard DNS — блокирует рекламу и трекеры на уровне DNS-запросов</string>
+    <string name="kill_switch">Kill Switch</string>
+    <string name="kill_switch_desc">Блокировать интернет при разрыве VPN-соединения. Предотвращает утечку трафика</string>
+    <string name="split_tunnel">Раздельный туннель</string>
+    <string name="split_enable">Включить</string>
+    <string name="split_all_vpn">Весь трафик через VPN</string>
+    <string name="split_bypass">Выбранные обходят VPN</string>
+    <string name="split_only">Только выбранные через VPN</string>
+    <string name="split_mode">Режим</string>
+    <string name="split_mode_bypass">Обход VPN</string>
+    <string name="split_mode_only">Только VPN</string>
+    <string name="apps">Приложения</string>
+    <string name="apps_selected">%d выбрано</string>
+    <string name="diagnostics">Диагностика</string>
+    <string name="ping_url">Сайт для пинга</string>
+    <string name="management">Управление</string>
+    <string name="remove_from_app">Удалить из приложения</string>
+    <string name="remove_from_app_desc">Сервер останется на VPS</string>
+    <string name="remove_from_server">Удалить с сервера</string>
+    <string name="remove_from_server_desc">Полная деинсталляция с VPS</string>
+    <string name="delete_server_confirm">Удалить сервер?</string>
+    <string name="delete_server_msg">%s будет удалён из приложения.</string>
+    <string name="delete">Удалить</string>
+    <string name="remove_from_vps">Удалить с сервера</string>
+    <string name="remove_from_vps_desc">Lionheart будет удалён с %s.</string>
+    <string name="ssh_password_for">SSH-пароль для %s</string>
+    <string name="custom_dns">Свой DNS</string>
+    <string name="mtu_hint">1500 — стандарт, 1400 — мобильная сеть, 1280 — проблемные сети</string>
+    <string name="ok">OK</string>
+
+    <!-- Logs -->
+    <string name="logs">Логи</string>
+    <string name="logs_hint">Логи появятся при подключении</string>
+
+    <!-- QR Scanner -->
+    <string name="scan_qr_title">Сканировать QR</string>
+    <string name="scan_qr_hint">Наведите камеру на QR-код\nсо смарт-ключом</string>
+    <string name="camera_permission_needed">Для сканирования QR-кода\nнеобходим доступ к камере</string>
+    <string name="grant_access">Дать доступ</string>
+    <string name="qr_found">QR-код найден</string>
+    <string name="qr_install_confirm">Установить этот смарт-ключ?\n\n%s…</string>
+    <string name="qr_install">Установить</string>
+
+    <!-- Split tunnel -->
+    <string name="bypass_vpn">Обход VPN</string>
+    <string name="only_through_vpn">Только через VPN</string>
+    <string name="search_apps">Поиск приложений</string>
+    <string name="show_system_apps">Показать системные приложения</string>
+    <string name="selected_count">Выбрано: %d</string>
+
+    <!-- Tile -->
+    <string name="tile_connected">Подключено</string>
+    <string name="tile_disconnected">Отключено</string>
+
+    <!-- Notifications -->
+    <string name="notif_connecting">Подключение…</string>
+    <string name="notif_connected">Подключено</string>
+
+    <!-- Country names -->
+    <string name="country_US">США</string>
+    <string name="country_DE">Германия</string>
+    <string name="country_NL">Нидерланды</string>
+    <string name="country_FI">Финляндия</string>
+    <string name="country_SE">Швеция</string>
+    <string name="country_GB">Великобритания</string>
+    <string name="country_FR">Франция</string>
+    <string name="country_JP">Япония</string>
+    <string name="country_SG">Сингапур</string>
+    <string name="country_CA">Канада</string>
+    <string name="country_AU">Австралия</string>
+    <string name="country_RU">Россия</string>
+    <string name="country_KZ">Казахстан</string>
+    <string name="country_LT">Литва</string>
+    <string name="country_LV">Латвия</string>
+    <string name="country_EE">Эстония</string>
+    <string name="country_PL">Польша</string>
+    <string name="country_UA">Украина</string>
+    <string name="country_TR">Турция</string>
+    <string name="country_IN">Индия</string>
+    <string name="country_BR">Бразилия</string>
+    <string name="country_HK">Гонконг</string>
+    <string name="country_BY">Беларусь</string>
+</resources>

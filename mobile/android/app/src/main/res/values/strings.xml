@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lionheart</string>
+
+    <!-- NEW: strings that were hardcoded in Kotlin -->
+    <string name="language_title">Language</string>
+    <string name="language_subtitle">Choose interface language</string>
+    <string name="system_language_settings">System language settings</string>
+    <string name="graphene_title">Hello, GrapheneOS!</string>
+    <string name="graphene_message">The app noticed you\'re using GrapheneOS. That\'s awesome!\n\nPlease note: by default, when first connecting VPN, the system enables Kill Switch (internet stops when VPN disconnects) and Always-On mode.\n\nTo change this, go to:\nSettings → Network → VPN → Lionheart → ⚙️</string>
+    <string name="graphene_ok">Got it!</string>
+    <string name="server_outdated_title">Server outdated</string>
+    <string name="server_outdated_msg">Server has v%1$s, need v%2$s.</string>
+    <string name="update_server">Update server</string>
+    <string name="updating_server">Updating server…</string>
+    <string name="server_updated">Server updated!</string>
+    <string name="icon_color">Icon color</string>
+    <string name="icon_color_desc">Choose color. Icon will change in a few seconds.</string>
+    <string name="icon_standard">Standard</string>
+    <string name="icon_gold">Gold</string>
+    <string name="icon_red">Red</string>
+    <string name="icon_blue">Blue</string>
+    <string name="icon_green">Green</string>
+    <string name="icon_white">White</string>
+    <string name="hide_app">Hide app</string>
+    <string name="hide_app_desc">Icon and name on launcher will change.</string>
+    <string name="hide_off">Off</string>
+    <string name="next">Next</string>
+    <string name="step_name_title">What to name the server?</string>
+    <string name="step_name_desc">Any name for your convenience.</string>
+    <string name="step_address_title">Server address</string>
+    <string name="step_ip_hint">Don\'t know the IP? Run on server:</string>
+    <string name="step_ssh_port_hint">In 99%% of cases SSH port is 22. No need to change.</string>
+    <string name="step_auth_title">Authorization</string>
+    <string name="step_auth_hint">SSH password usually comes in email after buying a VPS (from hosting). You can also find it in the server control panel.</string>
+    <string name="reassurance_msg">If Lionheart is already installed on the server — the script will update it (if a new version) or just add it, keeping the existing key. VPN on other devices will continue working.</string>
+    <string name="server_version">Server version</string>
+    <string name="turn_label">TURN</string>
+    <string name="no_ssh_access">This server has no SSH access.</string>
+    <string name="update_confirm_title">Update server</string>
+    <string name="update_confirm_msg">Server v%1$s → v%2$s</string>
+    <string name="update_confirm_desc">A new version will be downloaded and the service restarted.</string>
+    <string name="update_btn">Update</string>
+    <string name="ssh_port">SSH Port</string>
+
+    <!-- Status -->
+    <string name="status_connected">Connected</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_reconnecting">Reconnecting…</string>
+    <string name="status_error">Connection error</string>
+    <string name="status_disconnected">Disconnected</string>
+
+    <!-- Home -->
+    <string name="select_server">Select</string>
+    <string name="ping">Ping</string>
+    <string name="tap_to_ping">Tap</string>
+    <string name="ms_suffix">%d ms</string>
+    <string name="add_first_server">Add your first server</string>
+    <string name="add_first_server_desc">Install on a VPS or enter a key</string>
+    <string name="add_server">Add server</string>
+    <string name="server_label">Server</string>
+    <string name="hidden">Hidden</string>
+    <string name="mode_label">Mode</string>
+    <string name="mode_vpn">VPN</string>
+    <string name="mode_socks5">SOCKS5 proxy</string>
+    <string name="mode_mtproto">MTProto</string>
+    <string name="dns_label">DNS</string>
+    <string name="adguard_no_ads">AdGuard (no ads)</string>
+    <string name="mtu_label">MTU</string>
+    <string name="traffic_disguised">Traffic is disguised as a video call</string>
+    <string name="servers">Servers</string>
+    <string name="total_label">Total: %s</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="back">Back</string>
+    <string name="automation">Automation</string>
+    <string name="auto_connect">Auto-connect</string>
+    <string name="auto_connect_desc">Connect when opening the app</string>
+    <string name="boot_connect">Start on boot</string>
+    <string name="boot_connect_desc">Connect VPN after device restart</string>
+    <string name="appearance">Appearance</string>
+    <string name="theme">Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="protocol">Protocol</string>
+    <string name="transport">Transport</string>
+    <string name="multiplexer">Multiplexer</string>
+    <string name="encryption">Encryption</string>
+    <string name="proxy">Proxy</string>
+    <string name="relay">Relay</string>
+    <string name="data">Data</string>
+    <string name="reset_all">Reset all settings</string>
+    <string name="reset_all_desc">Delete all servers and restore defaults</string>
+    <string name="about">About</string>
+    <string name="version_format">Version %s</string>
+    <string name="about_description">VPN client with traffic obfuscation via WebRTC TURN servers. Traffic is encrypted with AES-256 and transmitted over KCP/UDP through TURN relays, making it indistinguishable from regular video calls.</string>
+    <string name="close">Close</string>
+    <string name="reset_all_confirm">Reset everything?</string>
+    <string name="reset_all_warning">All servers, settings and logs will be deleted. This action is irreversible.</string>
+    <string name="reset">Reset</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Setup wizard -->
+    <string name="setup_server">Server setup</string>
+    <string name="auto_setup">Automatic setup</string>
+    <string name="auto_setup_desc">Lionheart will automatically install the VPN server on your VPS. You need SSH access (root).</string>
+    <string name="server_name">Server name</string>
+    <string name="server_name_hint">My VPS</string>
+    <string name="ip_address">IP address</string>
+    <string name="port">Port</string>
+    <string name="username">Username</string>
+    <string name="ssh_password">SSH password</string>
+    <string name="show_password">Show</string>
+    <string name="install">Install</string>
+    <string name="step_of">Step %1$d of %2$d</string>
+    <string name="server_installed">Server installed!</string>
+    <string name="server_installed_desc">VPN server is running and added to the list</string>
+    <string name="connect_now">Connect</string>
+    <string name="or_add_existing">or add an existing server</string>
+    <string name="enter_smart_key">Enter smart key</string>
+    <string name="scan_qr">Scan QR code</string>
+
+    <!-- Server detail -->
+    <string name="server_section">Server</string>
+    <string name="name">Name</string>
+    <string name="country">Country</string>
+    <string name="show_ip">Show IP</string>
+    <string name="show_ip_desc">Display server IP on the home screen</string>
+    <string name="connection_mode">Connection mode</string>
+    <string name="mode_vpn_desc">VPN — all device traffic goes through the tunnel</string>
+    <string name="mode_socks5_desc">SOCKS5 proxy — local proxy on 127.0.0.1:1080, configured per app</string>
+    <string name="mode_mtproto_desc">MTProto proxy — for Telegram, local proxy</string>
+    <string name="network">Network</string>
+    <string name="dns_server">DNS server</string>
+    <string name="adguard_block_ads">AdGuard (ad blocking)</string>
+    <string name="ip_protocol">IP protocol</string>
+    <string name="prefer_ipv4">Prefer IPv4</string>
+    <string name="prefer_ipv4_default">Prefer IPv4 (default)</string>
+    <string name="only_ipv4">Only IPv4</string>
+    <string name="prefer_ipv6">Prefer IPv6</string>
+    <string name="prefer_ipv6_desc">Prefer IPv6 — may bypass blocks better, as IPv6 filtering is less common</string>
+    <string name="only_ipv6">Only IPv6</string>
+    <string name="only_ipv6_desc">Only IPv6 — does not work in networks without IPv6</string>
+    <string name="security">Security</string>
+    <string name="ad_block">Ad blocking</string>
+    <string name="ad_block_desc">AdGuard DNS — blocks ads and trackers at the DNS level</string>
+    <string name="kill_switch">Kill Switch</string>
+    <string name="kill_switch_desc">Block internet when VPN connection drops. Prevents traffic leaks</string>
+    <string name="split_tunnel">Split tunnel</string>
+    <string name="split_enable">Enable</string>
+    <string name="split_all_vpn">All traffic through VPN</string>
+    <string name="split_bypass">Selected bypass VPN</string>
+    <string name="split_only">Only selected through VPN</string>
+    <string name="split_mode">Mode</string>
+    <string name="split_mode_bypass">Bypass VPN</string>
+    <string name="split_mode_only">Only VPN</string>
+    <string name="apps">Apps</string>
+    <string name="apps_selected">%d selected</string>
+    <string name="diagnostics">Diagnostics</string>
+    <string name="ping_url">Ping URL</string>
+    <string name="management">Management</string>
+    <string name="remove_from_app">Remove from app</string>
+    <string name="remove_from_app_desc">Server will remain on VPS</string>
+    <string name="remove_from_server">Remove from server</string>
+    <string name="remove_from_server_desc">Full uninstall from VPS</string>
+    <string name="delete_server_confirm">Delete server?</string>
+    <string name="delete_server_msg">%s will be removed from the app.</string>
+    <string name="delete">Delete</string>
+    <string name="remove_from_vps">Remove from server</string>
+    <string name="remove_from_vps_desc">Lionheart will be removed from %s.</string>
+    <string name="ssh_password_for">SSH password for %s</string>
+    <string name="custom_dns">Custom DNS</string>
+    <string name="mtu_hint">1500 — standard, 1400 — mobile, 1280 — problematic networks</string>
+    <string name="ok">OK</string>
+
+    <!-- Logs -->
+    <string name="logs">Logs</string>
+    <string name="logs_hint">Logs will appear when connected</string>
+
+    <!-- QR Scanner -->
+    <string name="scan_qr_title">Scan QR</string>
+    <string name="scan_qr_hint">Point camera at QR code\nwith smart key</string>
+    <string name="camera_permission_needed">Camera access is needed\nto scan QR codes</string>
+    <string name="grant_access">Grant access</string>
+    <string name="qr_found">QR code found</string>
+    <string name="qr_install_confirm">Set this smart key?\n\n%s…</string>
+    <string name="qr_install">Set</string>
+
+    <!-- Split tunnel -->
+    <string name="bypass_vpn">Bypass VPN</string>
+    <string name="only_through_vpn">Only through VPN</string>
+    <string name="search_apps">Search apps</string>
+    <string name="show_system_apps">Show system apps</string>
+    <string name="selected_count">Selected: %d</string>
+
+    <!-- Tile -->
+    <string name="tile_connected">Connected</string>
+    <string name="tile_disconnected">Disconnected</string>
+
+    <!-- Notifications -->
+    <string name="notif_connecting">Connecting…</string>
+    <string name="notif_connected">Connected</string>
+
+    <!-- Country names -->
+    <string name="country_US">United States</string>
+    <string name="country_DE">Germany</string>
+    <string name="country_NL">Netherlands</string>
+    <string name="country_FI">Finland</string>
+    <string name="country_SE">Sweden</string>
+    <string name="country_GB">United Kingdom</string>
+    <string name="country_FR">France</string>
+    <string name="country_JP">Japan</string>
+    <string name="country_SG">Singapore</string>
+    <string name="country_CA">Canada</string>
+    <string name="country_AU">Australia</string>
+    <string name="country_RU">Russia</string>
+    <string name="country_KZ">Kazakhstan</string>
+    <string name="country_LT">Lithuania</string>
+    <string name="country_LV">Latvia</string>
+    <string name="country_EE">Estonia</string>
+    <string name="country_PL">Poland</string>
+    <string name="country_UA">Ukraine</string>
+    <string name="country_TR">Turkey</string>
+    <string name="country_IN">India</string>
+    <string name="country_BR">Brazil</string>
+    <string name="country_HK">Hong Kong</string>
+    <string name="country_BY">Belarus</string>
+</resources>

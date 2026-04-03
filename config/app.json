@@ -1,0 +1,32 @@
+{
+  "_comment": "Главный конфиг Lionheart. Меняй тут — скрипт подставит везде.",
+
+  "name": "Lionheart",
+  "package": "com.lionheart.vpn",
+  "version": "1.2",
+  "version_code": 4,
+
+  "server_port": "8443",
+  "default_dns": "1.1.1.1",
+  "default_mtu": 1500,
+  "ping_url": "https://cp.cloudflare.com",
+
+  "github_repo": "jaykaiperson/lionheart",
+  "install_dir": "/opt/lionheart",
+
+  "branding": {
+    "primary_color": "#FFB74D",
+    "primary_dark":  "#633F00",
+    "accent_color":  "#FF9800",
+    "notification_channel": "lionheart_vpn"
+  },
+
+  "icon": {
+    "_comment": "Цвет фона иконки и цвет SVG-льва. Меняешь тут → build.sh подставит в XML.",
+    "background_color": "#103bb0",
+    "foreground_color": "#ffffff"
+  },
+
+  "supported_languages": ["en", "ru", "be", "tt"],
+  "default_language": "en"
+}
