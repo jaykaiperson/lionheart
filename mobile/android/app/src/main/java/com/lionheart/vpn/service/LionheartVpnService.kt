@@ -112,11 +112,30 @@ class LionheartVpnService : VpnService() {
                     }
                     
                     if (!killSwitch) {
-                        try { builder.addDisallowedApplication(packageName) } catch (_: Exception) {}
-                        if (splitEnabled && splitApps.isNotEmpty()) {
-                            when (splitMode) {
-                                "bypass" -> splitApps.forEach { try { builder.addDisallowedApplication(it) } catch (_: Exception) {} }
-                                "only" -> splitApps.forEach { try { builder.addAllowedApplication(it) } catch (_: Exception) {} }
+                        val onlyMode = splitEnabled && splitMode == "only" && splitApps.isNotEmpty()
+                        val bypassApps = if (splitEnabled && splitMode == "bypass") splitApps.distinct() else emptyList()
+                    
+                        if (onlyMode) {
+                            splitApps.distinct().forEach { appPkg ->
+                                try {
+                                    builder.addAllowedApplication(appPkg)
+                                } catch (e: Exception) {
+                                    Log.w(TAG, "addAllowedApplication failed for $appPkg", e)
+                                }
+                            }
+                        } else {
+                            try {
+                                builder.addDisallowedApplication(packageName)
+                            } catch (e: Exception) {
+                                Log.w(TAG, "addDisallowedApplication failed for self package $packageName", e)
+                            }
+                    
+                            bypassApps.forEach { appPkg ->
+                                try {
+                                    builder.addDisallowedApplication(appPkg)
+                                } catch (e: Exception) {
+                                    Log.w(TAG, "addDisallowedApplication failed for $appPkg", e)
+                                }
                             }
                         }
                     }
