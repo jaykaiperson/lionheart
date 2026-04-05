@@ -1,0 +1,101 @@
+{
+  "_comment": "Оптимизация для стриминговых сервисов",
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "cloudflare",
+        "address": "https://1.1.1.1/dns-query",
+        "detour": "direct"
+      },
+      {
+        "tag": "proxy-dns",
+        "address": "tcp://8.8.8.8",
+        "detour": "proxy"
+      }
+    ],
+    "rules": [
+      {
+        "geosite": [
+          "netflix",
+          "disney",
+          "hulu",
+          "hbo",
+          "amazon"
+        ],
+        "server": "proxy-dns"
+      }
+    ],
+    "final": "cloudflare"
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "mtu": 9000,
+      "sniff": true,
+      "settings": {
+        "address": ["172.19.0.1/30"],
+        "auto_route": true,
+        "strict_route": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "selector",
+      "tag": "streaming",
+      "settings": {
+        "outbounds": ["lionheart-out"],
+        "default": "lionheart-out"
+      }
+    },
+    {
+      "type": "custom",
+      "tag": "lionheart-out",
+      "settings": {
+        "type": "lionheart",
+        "server": "YOUR_SERVER_IP",
+        "server_port": 8443,
+        "password": "YOUR_PASSWORD"
+      }
+    }
+  ],
+  "route": {
+    "geosite": {
+      "download_url": "https://github.com/SagerNet/sing-geosite/releases/latest/download/geosite.db",
+      "download_detour": "direct"
+    },
+    "rules": [
+      {
+        "geosite": [
+          "netflix",
+          "disney",
+          "hulu",
+          "hbo",
+          "amazon",
+          "youtube",
+          "spotify",
+          "apple-tv",
+          "bbc",
+          "itv"
+        ],
+        "outbound": "streaming"
+      },
+      {
+        "geosite": ["private", "cn"],
+        "geoip": ["private", "cn"],
+        "outbound": "direct"
+      }
+    ],
+    "auto_detect_interface": true,
+    "final": "direct"
+  }
+}

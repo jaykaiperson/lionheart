@@ -1,4 +1,4 @@
-// Package core is the shared Lionheart tunnel engine.
+// Package core is the shared Lionheart tunnel engine with sing-box integration.
 // Both the CLI (cmd/lionheart) and mobile bridge (mobile/golib) import this.
 package core
 
@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	Version     = "1.2"
+	Version     = "1.4" // Updated for sing-box integration
 	DefPort     = "8443"
 	MaxBackoff  = 60 * time.Second
 	HealthEvery = 15 * time.Second
@@ -334,4 +334,199 @@ func ReconnectLoop(ctx context.Context, sess *Session, cache *CredsCache, peer, 
 			}
 		}
 	}
+}
+
+// --- Tunnel Manager with sing-box integration ---
+
+// TunnelManager manages both legacy KCP tunnel and sing-box engine
+type TunnelManager struct {
+	ctx         context.Context
+	cancel      context.CancelFunc
+	smartKey    string
+	password    string
+	peer        string
+	
+	// Legacy components
+	session     *Session
+	cache       *CredsCache
+	reconnectCh chan struct{}
+	
+	// Sing-box components
+	singbox     *SingBoxEngine
+	useSingBox  bool
+	routingRules *RoutingRules
+	
+	// Status
+	mu          sync.RWMutex
+	status      string
+	txBytes     int64
+	rxBytes     int64
+}
+
+// TunnelConfig contains tunnel configuration
+type TunnelConfig struct {
+	SmartKey     string
+	Password     string
+	Peer         string
+	UseSingBox   bool
+	RoutingRules *RoutingRules
+	SingBoxConfig *SingBoxConfig
+}
+
+// NewTunnelManager creates a new tunnel manager
+func NewTunnelManager(config *TunnelConfig) *TunnelManager {
+	ctx, cancel := context.WithCancel(context.Background())
+	
+	peer := config.Peer
+	password := config.Password
+	
+	// Parse smart key if provided
+	if config.SmartKey != "" {
+		if p, pw, err := ParseSmartKey(config.SmartKey); err == nil {
+			peer = p
+			if password == "" {
+				password = pw
+			}
+		}
+	}
+	
+	return &TunnelManager{
+		ctx:         ctx,
+		cancel:      cancel,
+		smartKey:    config.SmartKey,
+		password:    password,
+		peer:        peer,
+		session:     &Session{},
+		cache:       &CredsCache{},
+		reconnectCh: make(chan struct{}, 1),
+		useSingBox:  config.UseSingBox,
+		routingRules: config.RoutingRules,
+		status:      "disconnected",
+	}
+}
+
+// Start starts the tunnel
+func (tm *TunnelManager) Start() error {
+	if tm.useSingBox {
+		return tm.startSingBox()
+	}
+	return tm.startLegacy()
+}
+
+// startLegacy starts the legacy KCP tunnel
+func (tm *TunnelManager) startLegacy() error {
+	tm.setStatus("connecting")
+	
+	// Establish initial connection
+	sess, closer, err := Establish(tm.cache, tm.peer, tm.password, false)
+	if err != nil {
+		tm.setStatus("error")
+		return fmt.Errorf("establish tunnel: %w", err)
+	}
+	
+	tm.session.Set(sess, closer)
+	tm.setStatus("connected")
+	
+	// Start health check and reconnection loops
+	go HealthLoop(tm.ctx, tm.session, tm.reconnectCh)
+	go ReconnectLoop(tm.ctx, tm.session, tm.cache, tm.peer, tm.password, tm.reconnectCh)
+	
+	return nil
+}
+
+// startSingBox starts the sing-box engine
+func (tm *TunnelManager) startSingBox() error {
+	tm.setStatus("connecting")
+	
+	// Parse server info from peer
+	host, portStr, err := net.SplitHostPort(tm.peer)
+	if err != nil {
+		return fmt.Errorf("parse peer address: %w", err)
+	}
+	
+	var port int
+	fmt.Sscanf(portStr, "%d", &port)
+	
+	// Create sing-box configuration
+	var sbConfig *SingBoxConfig
+	if tm.singbox != nil && tm.singbox.config != nil {
+		sbConfig = tm.singbox.config
+	} else {
+		sbConfig = CreateDefaultConfig(tm.smartKey, host, port, tm.password, tm.routingRules)
+	}
+	
+	// Create and initialize sing-box engine
+	tm.singbox = NewSingBoxEngine()
+	if err := tm.singbox.Initialize(sbConfig); err != nil {
+		tm.setStatus("error")
+		return fmt.Errorf("initialize sing-box: %w", err)
+	}
+	
+	// Start sing-box
+	if err := tm.singbox.Start(); err != nil {
+		tm.setStatus("error")
+		return fmt.Errorf("start sing-box: %w", err)
+	}
+	
+	tm.setStatus("connected")
+	return nil
+}
+
+// Stop stops the tunnel
+func (tm *TunnelManager) Stop() error {
+	tm.cancel()
+	
+	if tm.useSingBox && tm.singbox != nil {
+		tm.singbox.Stop()
+	} else {
+		tm.session.Stop()
+	}
+	
+	tm.setStatus("disconnected")
+	return nil
+}
+
+// Status returns current tunnel status
+func (tm *TunnelManager) Status() string {
+	tm.mu.RLock()
+	defer tm.mu.RUnlock()
+	return tm.status
+}
+
+func (tm *TunnelManager) setStatus(status string) {
+	tm.mu.Lock()
+	tm.status = status
+	tm.mu.Unlock()
+	
+	lis := getLis()
+	lis.OnStatus(status)
+}
+
+// GetStats returns traffic statistics
+func (tm *TunnelManager) GetStats() (tx, rx int64) {
+	if tm.useSingBox {
+		// For sing-box, stats would come from the engine
+		return tm.txBytes, tm.rxBytes
+	}
+	return tm.session.TxBytes.Load(), tm.session.RxBytes.Load()
+}
+
+// IsSingBox returns true if using sing-box engine
+func (tm *TunnelManager) IsSingBox() bool {
+	return tm.useSingBox
+}
+
+// GetSingBoxEngine returns the sing-box engine (if using sing-box)
+func (tm *TunnelManager) GetSingBoxEngine() *SingBoxEngine {
+	return tm.singbox
+}
+
+// EnableSingBox enables/disables sing-box mode
+func (tm *TunnelManager) EnableSingBox(enable bool) {
+	tm.useSingBox = enable
+}
+
+// SetRoutingRules sets routing rules for sing-box
+func (tm *TunnelManager) SetRoutingRules(rules *RoutingRules) {
+	tm.routingRules = rules
 }

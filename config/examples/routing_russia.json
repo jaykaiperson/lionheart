@@ -1,0 +1,148 @@
+{
+  "_comment": "Оптимизированная конфигурация для пользователей из России",
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "local",
+        "address": "local",
+        "detour": "direct"
+      },
+      {
+        "tag": "proxy-dns",
+        "address": "tcp://1.1.1.1",
+        "detour": "proxy"
+      },
+      {
+        "tag": "block",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "geosite": ["category-ads-all"],
+        "server": "block"
+      },
+      {
+        "geosite": ["ru", "yandex", "vk", "private"],
+        "server": "local"
+      }
+    ],
+    "final": "proxy-dns",
+    "strategy": "prefer_ipv4"
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "mtu": 9000,
+      "sniff": true,
+      "settings": {
+        "address": [
+          "172.19.0.1/30",
+          "fdfe:dcba:9876::1/126"
+        ],
+        "auto_route": true,
+        "strict_route": false,
+        "endpoint_independent_nat": true,
+        "udp_timeout": "5m"
+      }
+    },
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "127.0.0.1",
+      "listen_port": 1080,
+      "sniff": true
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    },
+    {
+      "type": "selector",
+      "tag": "proxy",
+      "settings": {
+        "outbounds": ["lionheart-out", "direct"],
+        "default": "lionheart-out"
+      }
+    },
+    {
+      "type": "custom",
+      "tag": "lionheart-out",
+      "settings": {
+        "type": "lionheart",
+        "server": "YOUR_SERVER_IP",
+        "server_port": 8443,
+        "password": "YOUR_PASSWORD",
+        "smart_key": "YOUR_SMART_KEY"
+      }
+    }
+  ],
+  "route": {
+    "geoip": {
+      "download_url": "https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db",
+      "download_detour": "direct"
+    },
+    "geosite": {
+      "download_url": "https://github.com/SagerNet/sing-geosite/releases/latest/download/geosite.db",
+      "download_detour": "direct"
+    },
+    "rules": [
+      {
+        "protocol": ["dns"],
+        "outbound": "dns-out"
+      },
+      {
+        "geosite": ["category-ads-all"],
+        "outbound": "block"
+      },
+      {
+        "geosite": [
+          "ru",
+          "yandex",
+          "vk",
+          "mailru",
+          "sberbank",
+          "tinkoff",
+          "ozon",
+          "wildberries",
+          "avito",
+          "kaspersky"
+        ],
+        "geoip": ["ru", "private"],
+        "outbound": "direct"
+      },
+      {
+        "geosite": [
+          "twitter",
+          "facebook",
+          "instagram",
+          "linkedin",
+          "tiktok",
+          "discord",
+          "telegram",
+          "wikipedia"
+        ],
+        "outbound": "proxy"
+      }
+    ],
+    "auto_detect_interface": true,
+    "final": "proxy"
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "store_fakeip": true
+    }
+  }
+}

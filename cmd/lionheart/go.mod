@@ -1,6 +1,6 @@
 module github.com/lionheart-vpn/lionheart/cmd/lionheart
 
-go 1.25.0
+go 1.22
 
 require (
 	github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5
@@ -21,6 +21,10 @@ require (
 	github.com/pion/transport/v4 v4.0.1 // indirect
 	github.com/pion/turn/v4 v4.1.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/sagernet/sing v0.6.0 // indirect
+	github.com/sagernet/sing-box v1.11.0 // indirect
+	github.com/sagernet/sing-dns v0.4.0 // indirect
+	github.com/sagernet/sing-tun v0.6.0 // indirect
 	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/wlynxg/anet v0.0.5 // indirect
 	golang.org/x/crypto v0.49.0 // indirect

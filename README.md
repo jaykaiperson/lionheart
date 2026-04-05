@@ -1,72 +1,107 @@
-<div align="center">
+# Lionheart v1.4 — sing-box Integration
 
-# lionheart
+**Lionheart VPN с интеграцией sing-box** — приватный децентрализованный self-hosted туннель с поддержкой продвинутых правил маршрутизации.
 
-**Приватный децентрализованный self-hosted туннель**
+## Новое в v1.4
 
-[![Latest Release](https://img.shields.io/github/v/release/jaykaiperson/lionheart?style=flat-square&color=success)](https://github.com/jaykaiperson/lionheart/releases/latest)
-![Go Version](https://img.shields.io/badge/Go-1.21%2B-00ADD8?logo=go&style=flat-square)
-![Android API](https://img.shields.io/badge/Android-API_21%2B-3DDC84?logo=android&style=flat-square)
-[![License](https://img.shields.io/github/license/jaykaiperson/lionheart?style=flat-square)](LICENSE)
+- **sing-box ядро** — современное ядро с TUN интерфейсом
+- **Правила маршрутизации** — GeoIP, GeoSite, домены, IP, порты
+- **Предустановленные профили** — готовые конфигурации для разных сценариев
+- **DNS routing** — продвинутая маршрутизация DNS-запросов
+- **Ad blocking** — блокировка рекламы и трекеров
+- **Обратная совместимость** — сохранена поддержка legacy KCP
 
-## Оригинальный репозиторий.
+## Быстрый старт
 
-[🇷🇺 Русский](#-русская-версия) · [🇬🇧 English](#-english-version)
+### CLI
 
-</div>
+```bash
+# Сервер
+./lionheart
+# Выберите режим 1
 
----
+# Клиент с sing-box
+./lionheart
+# Выберите режим 3
+# Введите Smart Key
+# Выберите профиль маршрутизации
+```
 
-## Информация
+### Android
 
-> У меня временно нет возможности быстро исправлять ошибки. Я знаю о них и по возможности исправляю. Сегодня-завтра выйдет 1.3.1 и фиксом критических ошибок. Буду благодарен за PR, это ускорит фиксы.
+```kotlin
+val vpn = LionheartVPN.getInstance()
+vpn.configure(smartKey)
+vpn.enableSingBox(true)
+vpn.setRoutingPreset("russia")
+vpn.connect()
+```
 
-## ⚠️ Дисклеймер / Disclaimer
+## Профили маршрутизации
 
-> **RU:** Этот проект создан в образовательных целях — для изучения сетевых протоколов, шифрования и архитектуры P2P-туннелей. Автор призывает использовать его исключительно в законных целях и не одобряет обход государственных блокировок и белых списков. К сожалению, техническая природа проекта делает такой обход возможным — и, надо признать, весьма эффективным. Вы используете программу на свой страх и риск, в соответствии с законодательством вашей страны.
->
-> **EN:** This project was built for educational purposes — to study network protocols, encryption, and P2P tunnel architecture. The author encourages use strictly within the bounds of applicable law and does not endorse circumventing government-imposed restrictions or allowlists. Unfortunately, the technical nature of the project makes such circumvention possible — and, to be frank, quite effective. You use this software at your own risk and in accordance with the laws of your jurisdiction.
+| Профиль | Описание |
+|---------|----------|
+| `direct_cn` | Прямое соединение для китайских сайтов |
+| `adblock` | Блокировка рекламы и трекеров |
+| `streaming` | Оптимизация для стриминговых сервисов |
+| `gaming` | Низкая задержка для игр |
+| `privacy` | Весь трафик через прокси |
+| `russia` | Оптимизация для российских пользователей |
+| `belarus` | Оптимизация для белорусских пользователей |
+| `minimal` | Только блокировка рекламы |
 
----
+## Структура проекта
 
-## 🇷🇺 Русская версия
+```
+lionheart-singbox/
+├── core/              # Ядро с sing-box интеграцией
+├── cmd/lionheart/     # CLI клиент
+├── mobile/android/    # Android библиотека
+├── config/examples/   # Примеры конфигураций
+└── docs/              # Документация
+```
 
-### 🚀 Что нового в v1.3
+## Сборка
 
-> **SOCKS5 без перехвата системного слота** — На Android режим SOCKS5 теперь поднимается как обычный фоновый процесс (`127.0.0.1:1080`) без вызова `VpnService.Builder.establish()`. Это освобождает системный слот и позволяет использовать Lionheart параллельно с v2ray или OpenVPN.
->
-> **Устранена гонка потоков в логах** — Исправлены краши `ConcurrentModificationException` при просмотре логов. Данные из фонового JNI-потока ядра Go теперь безопасно передаются в главный UI-поток через `viewModelScope.launch(Dispatchers.Main)`, исключая падения Jetpack Compose под нагрузкой.
->
-> **Обход брандмауэра Windows** — Механизм получения внешнего IP переведён с «голых» TCP-сокетов на `net/http` с фоллбэком на альтернативные API. Теперь `pubIP()` корректно обходит правила Windows Defender и не возвращает `0.0.0.0`.
->
-> **Улучшения UI/UX и совместимости** — Добавлено разрешение `QUERY_ALL_PACKAGES` для Android 11+ (API 30) — восстановлено отображение полного списка приложений в настройках Split Tunneling. Кнопки ручного ввода Smart Key и QR-сканер получили полноценные обработчики и навигацию.
->
-> **Надёжный деплой по SSH** — Скрипт авто-установки переведён на GitHub API для динамического парсинга ссылок на свежие x64 релизы. Полностью исключены ошибки 404 при изменениях в версионировании бинарников.
+### Требования
 
-### Что такое Lionheart
+- Go 1.22+
+- Android SDK (для Android)
+- NDK (для Android)
 
-Lionheart — приватный децентрализованный self-hosted туннель с высокопроизводительным ядром на Go и нативным Android-клиентом. Никаких центральных серверов, «комнат» или сбора метаданных — трафик идёт строго напрямую с вашего устройства на ваш личный VPS.
+### CLI
 
-Регистрация не требуется. Вы устанавливаете серверную часть на VPS, она автоматически генерирует **Smart Key** — закодированную строку с IP-адресом, портом и паролем сессии. Клиент на Android или ПК использует этот ключ для создания зашифрованного туннеля через протоколы **KCP** и **Yamux**. Ядро работает как локальный SOCKS5 прокси или как полноценный системный туннель на Android.
+```bash
+cd cmd/lionheart
+go build -o lionheart
+```
 
----
+### Android
 
-## 🇬🇧 English Version
+```bash
+cd mobile/android/golib
+gomobile bind -target=android -o ../app/libs/liblionheart.aar
+```
 
-### 🚀 What's New in v1.3
+## Конфигурация
 
-> **True SOCKS5 Proxy Mode** — On Android, SOCKS5 mode is now handled strictly as a Foreground Service binding to `127.0.0.1:1080` without invoking `VpnService.Builder.establish()`. This frees up the Android system slot, allowing Lionheart to run concurrently with other apps like v2ray or OpenVPN.
->
-> **Thread-Safe Real-Time Logs** — Fixed `ConcurrentModificationException` crashes when viewing live logs. Data streams from Go core JNI threads are now safely dispatched to the Main thread (`viewModelScope.launch(Dispatchers.Main)`) before updating Jetpack Compose UI states.
->
-> **Windows Firewall Evasion** — Completely rewrote the public IP detection in the CLI logic. Migrated from raw TCP sockets (often blocked by Windows Defender) to standard `net/http` clients with fallback APIs, resolving the persistent `0.0.0.0` IP bug.
->
-> **UI/UX & Compatibility Polishing** — Added `QUERY_ALL_PACKAGES` permission for Android 11+ (API 30) to populate the full application list in Split Tunneling settings. Fully implemented navigation logic and dialogs for the QR code scanner and manual Smart Key entry.
->
-> **Robust VPS Deployment** — The automated SSH deployment script now uses the GitHub API to dynamically parse and fetch the latest x64 release artifacts, effectively eliminating 404 errors during server setup.
+### Пример конфигурации (config.json)
 
-### What is Lionheart
+```json
+{
+  "role": "client",
+  "client_peer": "1.2.3.4:8443",
+  "password": "...",
+  "use_singbox": true,
+  "routing_preset": "russia"
+}
+```
 
-Lionheart is a private, decentralized self-hosted tunnel. It consists of a high-performance Go-based core and a native Android client. There are no central servers, third-party coordinators, or tracking mechanisms — your traffic flows directly between your device and your personal VPS.
+## Документация
 
-No registration required. Deploy the server component on your VPS and it automatically generates a **Smart Key** — a base64-encoded string containing the server's IP, port, and session password. The Android or CLI client uses this key to establish a secure, encrypted tunnel via **KCP** and **Yamux**. The core can operate either as a local SOCKS5 proxy or as a full-system Android tunnel.
+- [Миграция на sing-box](docs/SINGBOX_MIGRATION.md)
+- [Примеры конфигураций](config/examples/)
+
+## Лицензия
+
+MIT License

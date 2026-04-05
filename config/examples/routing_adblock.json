@@ -1,0 +1,91 @@
+{
+  "_comment": "Конфигурация с блокировкой рекламы и трекеров",
+  "log": {
+    "level": "warn",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "adguard",
+        "address": "tls://dns.adguard-dns.com",
+        "detour": "proxy"
+      },
+      {
+        "tag": "block",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "geosite": [
+          "category-ads-all",
+          "category-tracker"
+        ],
+        "server": "block"
+      }
+    ],
+    "final": "adguard"
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "mtu": 9000,
+      "sniff": true,
+      "settings": {
+        "address": ["172.19.0.1/30"],
+        "auto_route": true,
+        "strict_route": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    },
+    {
+      "type": "selector",
+      "tag": "proxy",
+      "settings": {
+        "outbounds": ["lionheart-out"],
+        "default": "lionheart-out"
+      }
+    },
+    {
+      "type": "custom",
+      "tag": "lionheart-out",
+      "settings": {
+        "type": "lionheart",
+        "server": "YOUR_SERVER_IP",
+        "server_port": 8443,
+        "password": "YOUR_PASSWORD"
+      }
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "geosite": [
+          "category-ads-all",
+          "category-tracker",
+          "category-malware",
+          "category-phishing"
+        ],
+        "outbound": "block"
+      },
+      {
+        "geosite": ["private"],
+        "geoip": ["private"],
+        "outbound": "direct"
+      }
+    ],
+    "auto_detect_interface": true,
+    "final": "proxy"
+  }
+}

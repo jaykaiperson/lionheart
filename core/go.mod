@@ -3,10 +3,14 @@ module github.com/lionheart-vpn/lionheart/core
 go 1.22
 
 require (
-	github.com/gorilla/websocket v1.5.3
 	github.com/hashicorp/yamux v0.1.2
 	github.com/pion/turn/v4 v4.1.4
 	github.com/xtaci/kcp-go/v5 v5.6.71
+	github.com/sagernet/sing-box v1.11.0
+	github.com/sagernet/sing v0.6.0
+	github.com/sagernet/sing-dns v0.4.0
+	github.com/sagernet/sing-tun v0.6.0
+	github.com/gorilla/websocket v1.5.3
 )
 
 require (

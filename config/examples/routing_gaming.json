@@ -1,0 +1,90 @@
+{
+  "_comment": "Низкая задержка для онлайн-игр",
+  "log": {
+    "level": "warn",
+    "timestamp": false
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "local",
+        "address": "local",
+        "detour": "direct"
+      }
+    ],
+    "final": "local"
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "mtu": 1400,
+      "sniff": true,
+      "settings": {
+        "address": ["172.19.0.1/30"],
+        "auto_route": true,
+        "strict_route": false,
+        "udp_timeout": "30s"
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "selector",
+      "tag": "proxy",
+      "settings": {
+        "outbounds": ["lionheart-out"],
+        "default": "lionheart-out"
+      }
+    },
+    {
+      "type": "custom",
+      "tag": "lionheart-out",
+      "settings": {
+        "type": "lionheart",
+        "server": "YOUR_SERVER_IP",
+        "server_port": 8443,
+        "password": "YOUR_PASSWORD"
+      }
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "protocol": ["udp"],
+        "port": [27015, 27016, 27017, 27018, 27019, 27020],
+        "outbound": "direct"
+      },
+      {
+        "geosite": [
+          "steam",
+          "epicgames",
+          "ea",
+          "ubisoft",
+          "blizzard",
+          "xbox",
+          "playstation",
+          "nintendo",
+          "riot",
+          "valorant"
+        ],
+        "outbound": "direct"
+      },
+      {
+        "port": [3074, 3075, 9308, 5000, 5001, 7777, 7778, 25565],
+        "outbound": "direct"
+      },
+      {
+        "geosite": ["private"],
+        "geoip": ["private"],
+        "outbound": "direct"
+      }
+    ],
+    "auto_detect_interface": true,
+    "final": "proxy"
+  }
+}
