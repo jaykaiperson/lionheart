@@ -1,14 +1,10 @@
 module github.com/lionheart-vpn/lionheart/mobile/golib
 
-go 1.22
+go 1.25.0
 
 require (
-	github.com/gorilla/websocket v1.5.3
-	github.com/hashicorp/yamux v0.1.2
 	github.com/lionheart-vpn/lionheart/core v0.0.0
-	github.com/pion/turn/v4 v4.1.4
 	github.com/xjasonlyu/tun2socks/v2 v2.6.0
-	github.com/xtaci/kcp-go/v5 v5.6.71
 	golang.org/x/mobile v0.0.0-20260312152759-81488f6aeb60
 )
 
@@ -23,6 +19,8 @@ require (
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/schema v1.4.1 // indirect
+	github.com/gorilla/websocket v1.5.3 // indirect
+	github.com/hashicorp/yamux v0.1.2 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
 	github.com/klauspost/reedsolomon v1.12.0 // indirect
 	github.com/pion/dtls/v3 v3.0.7 // indirect
@@ -31,9 +29,11 @@ require (
 	github.com/pion/stun/v3 v3.0.1 // indirect
 	github.com/pion/transport/v3 v3.0.8 // indirect
 	github.com/pion/transport/v4 v4.0.1 // indirect
+	github.com/pion/turn/v4 v4.1.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/wlynxg/anet v0.0.5 // indirect
+	github.com/xtaci/kcp-go/v5 v5.6.71 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
