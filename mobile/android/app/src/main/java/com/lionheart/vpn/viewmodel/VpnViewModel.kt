@@ -160,18 +160,31 @@ class VpnViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-    fun updateServerSetting(id: String, transform: (ServerProfile) -> ServerProfile) = viewModelScope.launch {
-        try {
-            val server = serverRepo.getById(id) ?: return@launch
-            val updated = transform(server)
-            serverRepo.updateServer(updated)
-            if (id == activeServerId.value) {
-                prefs.setDns(AdBlockConfig.getDns(updated.adBlock, updated.dns))
-                prefs.setSmartKey(updated.smartKey)
-                prefs.setServerIP(updated.serverIP)
-            }
-        } catch (_: Exception) {}
-    }
+	fun updateServerSetting(id: String, transform: (ServerProfile) -> ServerProfile) = viewModelScope.launch {
+		try {
+			val server = serverRepo.getById(id) ?: return@launch
+			val updated = transform(server)
+
+			serverRepo.updateServer(updated)
+
+			if (id == activeServerId.value) {
+				prefs.setDns(AdBlockConfig.getDns(updated.adBlock, updated.dns))
+				prefs.setSmartKey(updated.smartKey)
+				prefs.setServerIP(updated.serverIP)
+
+				val splitChanged =
+					server.splitEnabled != updated.splitEnabled ||
+					server.splitMode != updated.splitMode ||
+					server.splitApps.toSet() != updated.splitApps.toSet()
+
+				if (splitChanged) {
+					restartVpnIfNeeded(id)
+				}
+			}
+		} catch (e: Exception) {
+			addLog("error", "updateServerSetting: ${e.message}")
+		}
+	}
     fun uninstallServer(id: String, sshPassword: String, onDone: () -> Unit) = viewModelScope.launch {
         try {
             val server = serverRepo.getById(id) ?: return@launch
@@ -227,6 +240,17 @@ class VpnViewModel(application: Application) : AndroidViewModel(application) {
             addLog("error", "disconnect: ${e.message}")
         }
     }
+	fun restartVpnIfNeeded(serverId: String) {
+		if (serverId != activeServerId.value) return
+		if (!LionheartVpnService.isRunning) return
+
+		disconnect()
+
+		viewModelScope.launch {
+			delay(1000)
+			connect()
+		}
+	}
     fun toggle() {
         if (isToggling) return
         isToggling = true
@@ -343,14 +367,17 @@ class VpnViewModel(application: Application) : AndroidViewModel(application) {
     fun setBootConnect(v: Boolean) = viewModelScope.launch { prefs.setBootConnect(v) }
     fun setTheme(v: String) = viewModelScope.launch { prefs.setTheme(v) }
     fun setDynamicColor(v: Boolean) = viewModelScope.launch { prefs.setDynamicColor(v) }
-    fun toggleSplitApp(serverId: String, pkg: String) = viewModelScope.launch {
-        try {
-            val s = serverRepo.getById(serverId) ?: return@launch
-            val apps = s.splitApps.toMutableList()
-            if (apps.contains(pkg)) apps.remove(pkg) else apps.add(pkg)
-            serverRepo.updateServer(s.copy(splitApps = apps))
-        } catch (_: Exception) {}
-    }
+	fun toggleSplitApp(serverId: String, pkg: String) {
+		updateServerSetting(serverId) { server ->
+			val apps = server.splitApps.toMutableList()
+			if (apps.contains(pkg)) {
+				apps.remove(pkg)
+			} else {
+				apps.add(pkg)
+			}
+			server.copy(splitApps = apps.distinct())
+		}
+	}
     private fun lookupCountry(ip: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
             val conn = URL("http://ip-api.com/json/$ip") as HttpURLConnection
